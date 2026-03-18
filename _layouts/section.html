@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} - {{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  <div class="container">
+    <article>
+      {{ content }}
+    </article>
+    <nav class="section-nav">
+      {% if page.prev_section %}
+        <a href="{{ page.prev_section | relative_url }}">&larr; {{ page.prev_title }}</a>
+      {% else %}
+        <span></span>
+      {% endif %}
+      <a href="{{ '/' | relative_url }}">Home</a>
+      {% if page.next_section %}
+        <a href="{{ page.next_section | relative_url }}">{{ page.next_title }} &rarr;</a>
+      {% else %}
+        <span></span>
+      {% endif %}
+    </nav>
+  </div>
+</body>
+</html>

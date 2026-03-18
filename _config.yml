@@ -1,0 +1,11 @@
+title: Imitation Engines
+description: A letter by William Taysom
+baseurl: "/imitation-engines"
+url: ""
+theme: minima
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "page"

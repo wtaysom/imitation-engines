@@ -1,0 +1,137 @@
+:root {
+  --text: #2d2d2d;
+  --bg: #fafaf8;
+  --accent: #555;
+  --border: #ddd;
+  --max-width: 38em;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  font-size: 18px;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 3em auto;
+  padding: 0 1.5em;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+  margin: 1.5em 0 0.5em;
+  line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.1em; }
+
+p { margin: 0.8em 0; }
+
+a { color: var(--accent); }
+a:hover { color: var(--text); }
+
+blockquote {
+  margin: 1.2em 0;
+  padding: 0.8em 1.2em;
+  border-left: 3px solid var(--border);
+  color: #555;
+  font-style: italic;
+}
+
+blockquote p { margin: 0.4em 0; }
+
+ul, ol {
+  margin: 0.8em 0;
+  padding-left: 1.5em;
+}
+
+li { margin: 0.3em 0; }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em auto;
+}
+
+pre, code {
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 0.85em;
+}
+
+pre {
+  margin: 1.2em 0;
+  padding: 1em;
+  background: #f0f0ee;
+  overflow-x: auto;
+  border-radius: 3px;
+}
+
+/* Speaker labels for dialog/script formatting */
+.speaker {
+  font-weight: bold;
+  margin-top: 1.2em;
+  margin-bottom: 0.2em;
+}
+
+.dialog {
+  margin-left: 1.5em;
+  margin-bottom: 0.8em;
+}
+
+/* Navigation */
+.section-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3em;
+  padding-top: 1.5em;
+  border-top: 1px solid var(--border);
+  font-size: 0.9em;
+}
+
+.section-nav a {
+  text-decoration: none;
+}
+
+.section-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Table of contents on home page */
+.toc {
+  list-style: none;
+  padding-left: 0;
+}
+
+.toc li {
+  margin: 0.6em 0;
+}
+
+.toc a {
+  text-decoration: none;
+  font-size: 1.05em;
+}
+
+.toc a:hover {
+  text-decoration: underline;
+}
+
+/* Image captions */
+figure {
+  margin: 1.5em 0;
+}
+
+figcaption {
+  text-align: center;
+  font-size: 0.85em;
+  color: #777;
+  margin-top: 0.3em;
+}
