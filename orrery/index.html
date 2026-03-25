@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⨁ An Orrery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        #container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            width: 100vw;
+            height: 100vh;
+        }
+        .view-panel {
+            position: relative;
+            background: #000;
+            overflow: hidden;
+        }
+        .separator {
+            position: absolute;
+            background: #2a5298;
+            z-index: 50;
+        }
+        .separator.horizontal {
+            top: 50%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+        .separator.horizontal.left {
+            left: 0;
+            right: calc(50% + 138px);
+        }
+        .separator.horizontal.right {
+            left: calc(50% + 138px);
+            right: 0;
+        }
+        .separator.vertical {
+            left: 50%;
+            width: 2px;
+            transform: translateX(-50%);
+        }
+        .separator.vertical.top {
+            top: 0;
+            bottom: calc(50% + 110px);
+        }
+        .separator.vertical.bottom {
+            top: calc(50% + 110px);
+            bottom: 0;
+        }
+        .view-label {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 4px 12px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+            z-index: 10;
+            white-space: nowrap;
+        }
+        #controls {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.15);
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #2a5298;
+            color: #fff;
+            z-index: 100;
+            font-size: 11px;
+            width: 280px;
+        }
+        .control-group { margin-bottom: 12px; }
+        .control-group label { display: block; margin-bottom: 4px; color: #aaa; font-size: 10px; }
+        .control-group input, .control-group select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #333;
+            border-radius: 3px;
+            background: #111;
+            color: #fff;
+            font-size: 11px;
+        }
+        /* Hide date/time picker icons */
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+        .hint {
+            color: #666;
+            font-size: 9px;
+            text-align: left;
+            margin-top: -6px;
+            margin-bottom: 6px;
+        }
+        .control-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .control-row .control-group { flex: 1; margin-bottom: 0; }
+        .control-row:last-child { margin-bottom: 0; }
+        #controls button {
+            flex: 1;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 3px;
+            background: #2a5298;
+            color: #fff;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        #controls button:hover { background: #3a6ab8; }
+        input[type="range"] {
+            accent-color: #2a5298;
+        }
+        .info-row {
+            justify-content: space-between;
+        }
+        .info-item {
+            color: #aaa;
+            font-size: 10px;
+        }
+        .info-item span {
+            color: #7af;
+        }
+        #compass {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+        .compassRose {
+            width: 90px;
+            height: 90px;
+        }
+        .compassRose .ring {
+            fill: none;
+            stroke: #2a5298;
+            stroke-width: 2;
+        }
+        .compassRose .cardinal {
+            fill: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            text-anchor: middle;
+        }
+        .compassRose .north { fill: #7af; }
+        .compassRose .figure {
+            fill: #999;
+        }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="view-panel" id="orreryPanel">
+            <div class="view-label">Table-top Orrery</div>
+        </div>
+        <div class="view-panel" id="realScalePanel">
+            <div class="view-label">Real Scale Model</div>
+        </div>
+        <div class="view-panel" id="skyPanel">
+            <div class="view-label">Sky from Table-top</div>
+        </div>
+        <div class="view-panel" id="realSkypanel">
+            <div class="view-label">Sky from Real Scale</div>
+        </div>
+        <!-- Separators (above canvas, split to avoid control box) -->
+        <div class="separator horizontal left"></div>
+        <div class="separator horizontal right"></div>
+        <div class="separator vertical top"></div>
+        <div class="separator vertical bottom"></div>
+        <!-- Single centered compass with Vitruvian Man figure -->
+        <div id="compass">
+            <svg class="compassRose" viewBox="0 0 100 100">
+                <circle class="ring" cx="50" cy="50" r="45"/>
+                <text class="cardinal north" x="50" y="18">N</text>
+                <text class="cardinal" x="84" y="54">E</text>
+                <text class="cardinal" x="50" y="91">S</text>
+                <text class="cardinal" x="16" y="54">W</text>
+                <!-- Person icon (Wikimedia Commons CC-BY-SA) - rotates to show facing direction -->
+                <g id="compassFigure">
+                    <path class="figure" transform="translate(22,20) scale(0.45)" d="m62.096 8.5859c-5.208 0-9.424 4.2191-9.424 9.4261 0.001 5.203 4.217 9.424 9.424 9.424 5.202 0 9.422-4.221 9.422-9.424 0-5.208-4.22-9.4261-9.422-9.4261zm-10.41 21.268c-6.672 0-12.131 5.407-12.131 12.07v29.23c0 2.275 1.791 4.123 4.07 4.123 2.28 0 4.127-1.846 4.127-4.123v-26.355h2.102s0.048 68.811 0.048 73.331c0 3.05 2.478 5.53 5.532 5.53 3.052 0 5.525-2.48 5.525-5.53v-42.581h2.27v42.581c0 3.05 2.473 5.53 5.531 5.53 3.054 0 5.549-2.48 5.549-5.53v-73.331h2.127v26.355c0 2.275 1.85 4.123 4.126 4.123 2.28 0 4.073-1.846 4.073-4.123v-29.23c0-6.663-5.463-12.07-12.129-12.07h-20.82z"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div id="controls">
+        <div class="control-row">
+            <div class="control-group">
+                <label>Date</label>
+                <input type="date" id="dateInput">
+            </div>
+            <div class="control-group">
+                <label>Time (Local)</label>
+                <input type="time" id="timeInput" step="1">
+            </div>
+        </div>
+        <div class="hint">Try scrolling over Date, Time, and the man at the bottom.</div>
+        <div class="control-row">
+            <button id="nowBtn">Now</button>
+            <button id="auspiciousBtn">Auspicious</button>
+        </div>
+        <div class="control-row info-row">
+            <div class="info-item">Speed: <span id="speedLabel">1.0 hr/sec</span></div>
+            <div class="info-item">Moon: <span id="moonPhase">-</span></div>
+        </div>
+        <div class="control-group">
+            <input type="range" id="speedSlider" min="-6" max="6" value="2" step="0.1">
+        </div>
+        <div class="control-row">
+            <button id="reverseBtn">Reverse</button>
+            <button id="pauseBtn">Pause</button>
+            <button id="defaultSpeedBtn">1 hr/sec</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ============================================
+        // CONSTANTS
+        // ============================================
+        const DEG = Math.PI / 180;
+        const EARTH_YEAR_DAYS = 365.25;
+        const EARTH_SIDEREAL_DAY_HOURS = 23.9344696;
+        const MOON_SIDEREAL_MONTH_DAYS = 27.321661;
+        const EARTH_AXIAL_TILT = 23.44 * DEG;
+        const MOON_ORBITAL_INCLINATION = 5.14 * DEG;
+
+        // J2000 epoch
+        const J2000 = Date.UTC(2000, 0, 1, 12, 0, 0);
+
+        // Taipei, Taiwan
+        const OBSERVER_LAT = 25.0330 * DEG;
+        const OBSERVER_LON = 121.5654 * DEG;
+        const LOCAL_UTC_OFFSET = 8; // CST (China Standard Time)
+
+        // Table-top scale (exaggerated for visibility)
+        const SCALE = {
+            sunRadius: 12,
+            earthRadius: 6,
+            moonRadius: 3,
+            earthOrbitRadius: 28,
+            moonOrbitRadius: 10
+        };
+
+        // Real scale (proper astronomical ratios, scaled down for float precision)
+        // Sun-Earth distance is about 107 sun diameters
+        // Earth is about 1/109 sun diameter
+        // Moon is about 1/4 Earth diameter
+        // Earth-Moon distance is about 30 Earth diameters
+        const REAL_SCALE = {
+            sunRadius: 5,                                              // Scaled down 10× for precision
+            get earthRadius() { return this.sunRadius / 109; },        // ~0.046
+            get moonRadius() { return this.earthRadius / 3.67; },      // ~0.0125
+            get earthOrbitRadius() { return this.sunRadius * 215; },   // ~1,075
+            get moonOrbitRadius() { return this.earthRadius * 60; }    // ~2.75
+        };
+
+        // Speed presets
+        // Exponential speed: at slider ±2, speed = ±1 hr/sec (3600)
+        // Formula: speed = sign * exp(k * |slider|) where k = ln(3600)/2 ≈ 4.09
+        const SPEED_K = Math.log(3600) / 2;
+        function getSpeedFromSlider(value) {
+            if (Math.abs(value) < 0.3) return 0; // Dead zone for paused
+            const sign = value > 0 ? 1 : -1;
+            return sign * Math.exp(SPEED_K * Math.abs(value));
+        }
+        function formatSpeed(speed) {
+            if (speed === 0) return 'Paused';
+            const absSpeed = Math.abs(speed);
+            const dir = speed < 0 ? '← ' : '';
+            if (absSpeed < 60) return dir + absSpeed.toFixed(0) + ' sec/sec';
+            if (absSpeed < 3600) return dir + (absSpeed/60).toFixed(0) + ' min/sec';
+            if (absSpeed < 86400) return dir + (absSpeed/3600).toFixed(1) + ' hr/sec';
+            return dir + (absSpeed/86400).toFixed(1) + ' day/sec';
+        }
+
+        // ============================================
+        // STATE
+        // ============================================
+        let currentDate = new Date();
+        let animationSpeed = 3600; // Default 1 hr/sec
+        let lastFrameTime = performance.now();
+
+        // Single scene, four cameras, one renderer
+        let scene, renderer;
+        let orreryCamera, skyCamera, realScaleCamera, realSkyCamera;
+
+        // Table-top model objects
+        let sun, earth, earthPivot, earthContainer, moon, moonPivot;
+        let observerMarker;
+
+        // Real scale model objects (offset in Z to separate from table-top)
+        const REAL_OFFSET = new THREE.Vector3(0, 0, -2000);
+        let realSun, realEarth, realEarthPivot, realEarthContainer, realMoon, realMoonPivot;
+        let realObserverMarker;
+
+        // Skyboxes (need references to update positions)
+        let skybox, skyboxReal;
+
+        // Sky view look direction
+        let skyLookDir = { az: Math.PI, alt: Math.PI/2 }; // Start looking straight up (zenith)
+
+        // Observer's local frames (computed each frame)
+        let observerFrame = { up: null, north: null, east: null, pos: null };
+        let realObserverFrame = { up: null, north: null, east: null, pos: null };
+
+        // Moon texture alignment offsets (shift+drag to fine-tune if needed)
+        // Calibrated to align near side features with Earth direction
+        let moonTextureOffset = -1.51;  // ≈ -86.5°
+        let moonTextureTilt = -0.11;    // ≈ -6.3°
+
+        // ============================================
+        // ASTRONOMICAL CALCULATIONS
+        // ============================================
+        function getDaysSinceJ2000(date) {
+            return (date.getTime() - J2000) / (1000 * 60 * 60 * 24);
+        }
+
+        function getEarthOrbitalAngle(days) {
+            const earthLongitudeJ2000 = 100.46 * DEG;
+            return earthLongitudeJ2000 + (days / EARTH_YEAR_DAYS) * Math.PI * 2;
+        }
+
+        // Moon phase reference: New Moon on Jan 6, 2000 at 18:14 UTC
+        // Days from J2000 to this new moon: 5.26 days
+        const NEW_MOON_OFFSET_FROM_J2000 = 5.26;
+        const SYNODIC_MONTH_DAYS = 29.53059; // New moon to new moon
+
+        function getMoonPhaseAngle(days) {
+            // Returns angle in synodic cycle (0 = new moon, π = full moon)
+            const daysSinceNewMoon = days - NEW_MOON_OFFSET_FROM_J2000;
+            return (daysSinceNewMoon / SYNODIC_MONTH_DAYS) * Math.PI * 2;
+        }
+
+        function getMoonOrbitalAngle(days) {
+            // Moon's position around Earth in earthContainer's local frame
+            // moonPivot is child of earthContainer, so -X always points toward Sun
+            // Moon starts at +X in moonPivot frame (moon.position.x = radius)
+            // Adding π flips it so phase 0 = new moon = at -X = toward Sun
+            const phaseAngle = getMoonPhaseAngle(days);
+            // Phase 0 = new moon = toward sun (between Earth and Sun)
+            // Phase π = full moon = away from sun (opposite side of Earth)
+            return phaseAngle + Math.PI;
+        }
+
+        // ============================================
+        // SCENE SETUP
+        // ============================================
+        function initScene() {
+            scene = new THREE.Scene();
+
+            // Single renderer for both views
+            // Logarithmic depth buffer helps with precision at large distances
+            renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.autoClear = false; // We'll clear manually for split view
+            document.body.appendChild(renderer.domElement);
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.top = '0';
+            renderer.domElement.style.left = '0';
+
+            // Orrery camera (table-top overview) - sees layer 0 only
+            orreryCamera = new THREE.PerspectiveCamera(60, 1, 0.1, 6000);
+            orreryCamera.position.set(0, 60, 60);
+            orreryCamera.lookAt(0, 0, 0);
+            // Default layer 0 is already enabled
+
+            // Sky camera (observer's view from table-top) - sees layer 0 only
+            skyCamera = new THREE.PerspectiveCamera(100, 1, 0.1, 6000);
+            // Default layer 0 is already enabled
+
+            // Real scale camera (overview of properly scaled model) - sees layer 1 only
+            realScaleCamera = new THREE.PerspectiveCamera(60, 1, 0.01, 10000);
+            realScaleCamera.layers.set(1);
+
+            // Real sky camera (observer's view from real scale) - sees layer 1 only
+            realSkyCamera = new THREE.PerspectiveCamera(100, 1, 0.001, 10000);
+            realSkyCamera.layers.set(1);
+
+            // Ambient light
+            // Low ambient for sharp lit/unlit distinction
+            scene.add(new THREE.AmbientLight(0x111111));
+
+            // Texture loader with CORS handling
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.crossOrigin = 'anonymous';
+
+            // Texture URLs - local copies from Solar System Scope (CC BY 4.0)
+            const TEXTURES = {
+                sun: 'textures/sun.jpg',
+                earth: 'textures/earth.jpg',
+                moon: 'textures/moon.jpg',
+                milkyWay: 'textures/stars_milky_way.jpg'
+            };
+
+            // Helper to load texture with fallback
+            function loadTexture(url, fallbackColor, onLoad) {
+                const texture = textureLoader.load(
+                    url,
+                    (tex) => {
+                        console.log('Loaded texture:', url);
+                        if (onLoad) onLoad(tex);
+                    },
+                    (progress) => {
+                        console.log('Loading texture:', url, progress.loaded, '/', progress.total);
+                    },
+                    (err) => {
+                        console.error('Failed to load texture:', url, err);
+                    }
+                );
+                return texture;
+            }
+
+            // Sun with texture
+            const sunTexture = loadTexture(TEXTURES.sun, 0xffdd44);
+            sun = new THREE.Mesh(
+                new THREE.SphereGeometry(SCALE.sunRadius, 32, 32),
+                new THREE.MeshBasicMaterial({ map: sunTexture, color: 0xffdd44 })
+            );
+            scene.add(sun);
+            sun.add(new THREE.PointLight(0xffffff, 1.5, 500));
+
+            // Sun glow
+            const glow = new THREE.Mesh(
+                new THREE.SphereGeometry(SCALE.sunRadius * 1.3, 16, 16),
+                new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.15 })
+            );
+            sun.add(glow);
+
+            // Milky Way skyboxes - one for each model so orientation matches
+            const milkyWayTexture = loadTexture(TEXTURES.milkyWay, 0x000011);
+            const skyboxGeometry = new THREE.SphereGeometry(5000, 64, 32);
+            const skyboxMaterial = new THREE.MeshBasicMaterial({
+                map: milkyWayTexture,
+                side: THREE.BackSide // Render on inside of sphere
+            });
+
+            // Skybox for table-top model (layer 0) - position updated per-frame to follow camera
+            skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+            skybox.layers.set(0);
+            scene.add(skybox);
+
+            // Skybox for real scale model (layer 1) - position updated per-frame to follow camera
+            skyboxReal = new THREE.Mesh(skyboxGeometry, skyboxMaterial.clone());
+            skyboxReal.layers.set(1);
+            scene.add(skyboxReal);
+
+            // Earth orbit ring (torus for visible thickness) - 1.5% of radius
+            const earthOrbit = new THREE.Mesh(
+                new THREE.TorusGeometry(SCALE.earthOrbitRadius, SCALE.earthOrbitRadius * 0.015, 8, 64),
+                new THREE.MeshBasicMaterial({ color: 0x4466aa, transparent: true, opacity: 0.5 })
+            );
+            earthOrbit.rotation.x = Math.PI / 2; // Lay flat
+            scene.add(earthOrbit);
+
+            // Earth system
+            earthPivot = new THREE.Object3D();
+            scene.add(earthPivot);
+
+            earthContainer = new THREE.Object3D();
+            earthContainer.position.x = SCALE.earthOrbitRadius;
+            earthPivot.add(earthContainer);
+
+            const earthTexture = loadTexture(TEXTURES.earth, 0x2244aa);
+            earth = new THREE.Mesh(
+                new THREE.SphereGeometry(SCALE.earthRadius, 32, 32),
+                new THREE.MeshPhongMaterial({ map: earthTexture, color: 0x8888ff })
+            );
+            earth.rotation.z = EARTH_AXIAL_TILT;
+            earthContainer.add(earth);
+
+            // Equator ring
+            const eqRing = new THREE.Mesh(
+                new THREE.RingGeometry(SCALE.earthRadius * 1.01, SCALE.earthRadius * 1.02, 32),
+                new THREE.MeshBasicMaterial({ color: 0x44ff44, side: THREE.DoubleSide })
+            );
+            eqRing.rotation.x = Math.PI / 2;
+            earth.add(eqRing);
+
+            // Observer marker (Provo)
+            observerMarker = new THREE.Mesh(
+                new THREE.SphereGeometry(SCALE.earthRadius * 0.08, 8, 8),
+                new THREE.MeshBasicMaterial({ color: 0xff4444 })
+            );
+            const obsX = Math.cos(OBSERVER_LAT) * Math.cos(OBSERVER_LON);
+            const obsY = Math.sin(OBSERVER_LAT);
+            const obsZ = -Math.cos(OBSERVER_LAT) * Math.sin(OBSERVER_LON);
+            observerMarker.position.set(obsX * SCALE.earthRadius, obsY * SCALE.earthRadius, obsZ * SCALE.earthRadius);
+            earth.add(observerMarker);
+
+            // Moon system
+            moonPivot = new THREE.Object3D();
+            moonPivot.rotation.x = MOON_ORBITAL_INCLINATION;
+            earthContainer.add(moonPivot);
+
+            const moonTexture = loadTexture(TEXTURES.moon, 0xaaaaaa);
+            moon = new THREE.Mesh(
+                new THREE.SphereGeometry(SCALE.moonRadius, 16, 16),
+                new THREE.MeshPhongMaterial({ map: moonTexture, color: 0xcccccc })
+            );
+            moon.position.x = SCALE.moonOrbitRadius;
+            moonPivot.add(moon);
+
+            // Moon orbit ring (torus for visible thickness) - 3% of radius (thicker for visibility)
+            const moonOrbit = new THREE.Mesh(
+                new THREE.TorusGeometry(SCALE.moonOrbitRadius, SCALE.moonOrbitRadius * 0.03, 8, 32),
+                new THREE.MeshBasicMaterial({ color: 0x667788, transparent: true, opacity: 0.5 })
+            );
+            moonOrbit.rotation.x = Math.PI / 2 + MOON_ORBITAL_INCLINATION; // Lay flat + inclination
+            earthContainer.add(moonOrbit);
+
+            // ============================================
+            // REAL SCALE MODEL (proper astronomical distances)
+            // ============================================
+
+            // Real scale Sun (layer 1)
+            realSun = new THREE.Mesh(
+                new THREE.SphereGeometry(REAL_SCALE.sunRadius, 32, 32),
+                new THREE.MeshBasicMaterial({ map: sunTexture, color: 0xffdd44 })
+            );
+            realSun.position.copy(REAL_OFFSET);
+            realSun.layers.set(1);
+            scene.add(realSun);
+            const realSunLight = new THREE.PointLight(0xffffff, 1.5, 5000);
+            realSunLight.layers.set(1);
+            realSun.add(realSunLight);
+
+            // Real scale sun glow (simulates corona/brightness perception)
+            const realGlow = new THREE.Mesh(
+                new THREE.SphereGeometry(REAL_SCALE.sunRadius * 3, 16, 16),
+                new THREE.MeshBasicMaterial({ color: 0xffcc44, transparent: true, opacity: 0.3 })
+            );
+            realGlow.layers.set(1);
+            realSun.add(realGlow);
+            const realGlow2 = new THREE.Mesh(
+                new THREE.SphereGeometry(REAL_SCALE.sunRadius * 6, 16, 16),
+                new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.15 })
+            );
+            realGlow2.layers.set(1);
+            realSun.add(realGlow2);
+
+            // Real scale Earth orbit ring (layer 1)
+            const realEarthOrbit = new THREE.Mesh(
+                new THREE.TorusGeometry(REAL_SCALE.earthOrbitRadius, REAL_SCALE.earthOrbitRadius * 0.015, 8, 128),
+                new THREE.MeshBasicMaterial({ color: 0x4466aa, transparent: true, opacity: 0.5 })
+            );
+            realEarthOrbit.rotation.x = Math.PI / 2;
+            realEarthOrbit.position.copy(REAL_OFFSET);
+            realEarthOrbit.layers.set(1);
+            scene.add(realEarthOrbit);
+
+            // Real scale Earth system (layer 1)
+            realEarthPivot = new THREE.Object3D();
+            realEarthPivot.position.copy(REAL_OFFSET);
+            realEarthPivot.layers.set(1);
+            scene.add(realEarthPivot);
+
+            realEarthContainer = new THREE.Object3D();
+            realEarthContainer.position.x = REAL_SCALE.earthOrbitRadius;
+            realEarthContainer.layers.set(1);
+            realEarthPivot.add(realEarthContainer);
+
+            realEarth = new THREE.Mesh(
+                new THREE.SphereGeometry(REAL_SCALE.earthRadius, 32, 32),
+                new THREE.MeshPhongMaterial({ map: earthTexture, color: 0x8888ff })
+            );
+            realEarth.rotation.z = EARTH_AXIAL_TILT;
+            realEarth.layers.set(1);
+            realEarthContainer.add(realEarth);
+
+            // Real scale observer marker - invisible point for camera positioning only
+            realObserverMarker = new THREE.Object3D();
+            realObserverMarker.position.set(
+                obsX * REAL_SCALE.earthRadius,
+                obsY * REAL_SCALE.earthRadius,
+                obsZ * REAL_SCALE.earthRadius
+            );
+            realEarth.add(realObserverMarker);
+
+            // Real scale Moon system (layer 1)
+            realMoonPivot = new THREE.Object3D();
+            realMoonPivot.rotation.x = MOON_ORBITAL_INCLINATION;
+            realMoonPivot.layers.set(1);
+            realEarthContainer.add(realMoonPivot);
+
+            realMoon = new THREE.Mesh(
+                new THREE.SphereGeometry(REAL_SCALE.moonRadius, 16, 16),
+                new THREE.MeshPhongMaterial({ map: moonTexture, color: 0xcccccc })
+            );
+            realMoon.position.x = REAL_SCALE.moonOrbitRadius;
+            realMoon.layers.set(1);
+            realMoonPivot.add(realMoon);
+
+            // Real scale Moon orbit ring (layer 1)
+            const realMoonOrbit = new THREE.Mesh(
+                new THREE.TorusGeometry(REAL_SCALE.moonOrbitRadius, REAL_SCALE.moonOrbitRadius * 0.03, 8, 32),
+                new THREE.MeshBasicMaterial({ color: 0x667788, transparent: true, opacity: 0.5 })
+            );
+            realMoonOrbit.rotation.x = Math.PI / 2 + MOON_ORBITAL_INCLINATION;
+            realMoonOrbit.layers.set(1);
+            realEarthContainer.add(realMoonOrbit);
+
+            // Setup mouse controls on canvas
+            setupCanvasControls();
+        }
+
+        // ============================================
+        // CONTROLS
+        // ============================================
+        // Shared spherical coords for both orrery views (locked together)
+        let orrerySpherical = { theta: Math.PI/4, phi: Math.PI/4, r: 60 };
+
+        // Scale factor: real orbit / table-top orbit
+        const ORBIT_SCALE_RATIO = REAL_SCALE.earthOrbitRadius / SCALE.earthOrbitRadius;
+
+        function updateOrreryCamera() {
+            // Get Earth's current world position (table-top)
+            const earthPos = new THREE.Vector3();
+            if (earthContainer) {
+                earthContainer.getWorldPosition(earthPos);
+            }
+
+            orreryCamera.position.set(
+                earthPos.x + orrerySpherical.r * Math.sin(orrerySpherical.phi) * Math.cos(orrerySpherical.theta),
+                earthPos.y + orrerySpherical.r * Math.cos(orrerySpherical.phi),
+                earthPos.z + orrerySpherical.r * Math.sin(orrerySpherical.phi) * Math.sin(orrerySpherical.theta)
+            );
+            orreryCamera.lookAt(earthPos);
+        }
+
+        function updateRealScaleCamera() {
+            // Get real Earth's current world position
+            const realEarthPos = new THREE.Vector3();
+            if (realEarthContainer) {
+                realEarthContainer.getWorldPosition(realEarthPos);
+            }
+
+            // Non-linear zoom: at far zoom, track proportionally (orbits same angular size)
+            // At close zoom, get much closer so we can see tiny Earth
+            // r=70 (max) -> distance ~2700 (full orbit view)
+            // r=1 (min) -> distance ~0.5 (close to Earth)
+            const minR = 1, maxR = 70;
+            const minDist = 0.3, maxDist = maxR * ORBIT_SCALE_RATIO;
+            // Use exponential interpolation for smooth zoom feel
+            const t = (orrerySpherical.r - minR) / (maxR - minR); // 0 to 1
+            const scaledR = minDist * Math.pow(maxDist / minDist, t);
+
+            realScaleCamera.position.set(
+                realEarthPos.x + scaledR * Math.sin(orrerySpherical.phi) * Math.cos(orrerySpherical.theta),
+                realEarthPos.y + scaledR * Math.cos(orrerySpherical.phi),
+                realEarthPos.z + scaledR * Math.sin(orrerySpherical.phi) * Math.sin(orrerySpherical.theta)
+            );
+            realScaleCamera.lookAt(realEarthPos);
+        }
+
+        function setupCanvasControls() {
+            const canvas = renderer.domElement;
+            let isDragging = false;
+            let dragZone = null; // 'top' or 'bottom'
+            let prev = { x: 0, y: 0 };
+
+            function getZone(y) {
+                return y < window.innerHeight / 2 ? 'top' : 'bottom';
+            }
+
+            canvas.addEventListener('mousedown', e => {
+                isDragging = true;
+                dragZone = getZone(e.clientY);
+                prev = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                const dx = e.clientX - prev.x;
+                const dy = e.clientY - prev.y;
+
+                if (e.shiftKey) {
+                    // Shift+drag: adjust moon texture offsets
+                    // Horizontal = Y rotation (longitude), Vertical = Z rotation (tilt)
+                    moonTextureOffset += dx * 0.01;
+                    moonTextureTilt += dy * 0.01;
+                    console.log('moonTextureOffset:', moonTextureOffset.toFixed(4), 'rad =', (moonTextureOffset * 180 / Math.PI).toFixed(1) + '°',
+                                '| moonTextureTilt:', moonTextureTilt.toFixed(4), 'rad =', (moonTextureTilt * 180 / Math.PI).toFixed(1) + '°');
+                } else if (dragZone === 'top') {
+                    // Both orrery views - locked orientation
+                    orrerySpherical.theta -= dx * 0.01;
+                    orrerySpherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, orrerySpherical.phi + dy * 0.01));
+                    updateOrreryCamera();
+                    updateRealScaleCamera();
+                } else {
+                    // Both sky views - locked facing direction
+                    skyLookDir.az -= (dx + dy) * 0.005;
+                    updateCompass();
+                }
+
+                prev = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mouseup', () => { isDragging = false; dragZone = null; });
+            canvas.addEventListener('mouseleave', () => { isDragging = false; dragZone = null; });
+
+            canvas.addEventListener('wheel', e => {
+                const zone = getZone(e.clientY);
+                if (zone === 'top') {
+                    // Both orrery views - locked zoom (scaled for orbit matching)
+                    // Min 1 (very close to see Earth in real scale), max 70
+                    orrerySpherical.r = Math.max(1, Math.min(70, orrerySpherical.r + e.deltaY * 0.1));
+                    updateOrreryCamera();
+                    updateRealScaleCamera();
+                } else {
+                    // Both sky views - locked FOV
+                    const newFov = Math.max(20, Math.min(150, skyCamera.fov + e.deltaY * 0.05));
+                    skyCamera.fov = newFov;
+                    realSkyCamera.fov = newFov;
+                    skyCamera.updateProjectionMatrix();
+                    realSkyCamera.updateProjectionMatrix();
+                }
+                e.preventDefault();
+            }, { passive: false });
+
+            updateOrreryCamera();
+            updateRealScaleCamera();
+        }
+
+        function setupOrreryControls() {
+            // Now handled by setupCanvasControls
+        }
+
+        function setupSkyControls() {
+            // Now handled by setupCanvasControls
+        }
+
+        function faceDirection(az) {
+            skyLookDir.az = az;
+            skyLookDir.alt = Math.PI / 2; // Zenith
+            updateCompass();
+        }
+
+        function updateCompass() {
+            let az = ((skyLookDir.az % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+            // Rotate figure so it's upright when facing south (az = π)
+            // Head points toward north (opposite of facing direction)
+            let degrees = (az / DEG) - 180;
+            const figure = document.getElementById('compassFigure');
+            if (figure) {
+                figure.setAttribute('transform', `rotate(${degrees} 50 50)`);
+            }
+        }
+
+        // Match orrery camera to sky camera position/orientation
+        function matchOrreryToSky() {
+            if (!observerFrame.pos) return;
+
+            const lookDir = new THREE.Vector3()
+                .addScaledVector(observerFrame.north, Math.cos(skyLookDir.az) * Math.cos(skyLookDir.alt))
+                .addScaledVector(observerFrame.east, Math.sin(skyLookDir.az) * Math.cos(skyLookDir.alt))
+                .addScaledVector(observerFrame.up, Math.sin(skyLookDir.alt));
+
+            const cameraPos = observerFrame.pos.clone().addScaledVector(observerFrame.up, 2);
+
+            orreryCamera.fov = 100;
+            orreryCamera.updateProjectionMatrix();
+            orreryCamera.position.copy(cameraPos);
+            orreryCamera.up.copy(observerFrame.up);
+            orreryCamera.lookAt(cameraPos.clone().add(lookDir.multiplyScalar(100)));
+        }
+
+        // ============================================
+        // UPDATE POSITIONS
+        // ============================================
+        function updatePositions() {
+            const days = getDaysSinceJ2000(currentDate);
+
+            // Computed angles (shared by both models)
+            const earthOrbitalAngle = getEarthOrbitalAngle(days);
+            const earthRotations = days * (24 / EARTH_SIDEREAL_DAY_HOURS);
+            const earthRotationAngle = earthRotations * Math.PI * 2;
+            const moonOrbitalAngle = getMoonOrbitalAngle(days);
+
+            // ---- TABLE-TOP MODEL ----
+            earthPivot.rotation.y = -earthOrbitalAngle;
+            earth.rotation.y = earthRotationAngle + earthOrbitalAngle + Math.PI;
+            // Moon orbits counterclockwise from above North Pole (positive rotation)
+            moonPivot.rotation.y = moonOrbitalAngle;
+
+            // Tidal locking for table-top moon
+            // Offset to align texture's near side with Earth direction
+            // Use shift+drag to adjust interactively, then read moonTextureOffset from console
+
+            const moonPos = new THREE.Vector3();
+            moon.getWorldPosition(moonPos);
+            const earthPosForMoon = new THREE.Vector3();
+            earthContainer.getWorldPosition(earthPosForMoon);
+            const moonToEarth = earthPosForMoon.clone().sub(moonPos).normalize();
+
+            const parentWorldMatrix = new THREE.Matrix4();
+            moonPivot.updateWorldMatrix(true, false);
+            parentWorldMatrix.copy(moonPivot.matrixWorld);
+            const parentInverse = parentWorldMatrix.clone().invert();
+            const localToEarth = moonToEarth.clone().transformDirection(parentInverse);
+            moon.rotation.y = Math.atan2(localToEarth.x, localToEarth.z) + moonTextureOffset;
+            moon.rotation.x = moonTextureTilt;
+
+            // ---- REAL SCALE MODEL ----
+            realEarthPivot.rotation.y = -earthOrbitalAngle;
+            realEarth.rotation.y = earthRotationAngle + earthOrbitalAngle + Math.PI;
+            // Moon orbits counterclockwise from above North Pole (positive rotation)
+            realMoonPivot.rotation.y = moonOrbitalAngle;
+
+            // Tidal locking for real scale moon (same offset as table-top)
+            const realMoonPos = new THREE.Vector3();
+            realMoon.getWorldPosition(realMoonPos);
+            const realEarthPosForMoon = new THREE.Vector3();
+            realEarthContainer.getWorldPosition(realEarthPosForMoon);
+            const realMoonToEarth = realEarthPosForMoon.clone().sub(realMoonPos).normalize();
+
+            const realParentWorldMatrix = new THREE.Matrix4();
+            realMoonPivot.updateWorldMatrix(true, false);
+            realParentWorldMatrix.copy(realMoonPivot.matrixWorld);
+            const realParentInverse = realParentWorldMatrix.clone().invert();
+            const realLocalToEarth = realMoonToEarth.clone().transformDirection(realParentInverse);
+            realMoon.rotation.y = Math.atan2(realLocalToEarth.x, realLocalToEarth.z) + moonTextureOffset;
+            realMoon.rotation.x = moonTextureTilt;
+
+            // ---- TABLE-TOP OBSERVER FRAME ----
+            const observerWorldPos = new THREE.Vector3();
+            earth.localToWorld(observerWorldPos.copy(observerMarker.position));
+
+            const earthWorldPos = new THREE.Vector3();
+            earthContainer.getWorldPosition(earthWorldPos);
+
+            const up = observerWorldPos.clone().sub(earthWorldPos).normalize();
+
+            const lat = OBSERVER_LAT;
+            const lon = OBSERVER_LON;
+
+            const northLocal = new THREE.Vector3(
+                -Math.sin(lat) * Math.cos(lon),
+                Math.cos(lat),
+                Math.sin(lat) * Math.sin(lon)
+            ).normalize();
+
+            // East = up × north for right-handed frame
+            // The formula below was backwards, causing left/right to be flipped
+            const eastLocal = new THREE.Vector3(
+                Math.cos(lat) * Math.sin(lon),
+                0,
+                Math.cos(lat) * Math.cos(lon)
+            ).normalize();
+
+            const earthQuat = new THREE.Quaternion();
+            earth.getWorldQuaternion(earthQuat);
+
+            const north = northLocal.clone().applyQuaternion(earthQuat);
+            const east = eastLocal.clone().applyQuaternion(earthQuat);
+
+            observerFrame = { up, north, east, pos: observerWorldPos };
+
+            // Table-top sky camera
+            const skyOffset = 0.5;
+            skyCamera.position.copy(observerWorldPos).addScaledVector(up, skyOffset);
+
+            const horizonDir = new THREE.Vector3()
+                .addScaledVector(north, Math.cos(skyLookDir.az))
+                .addScaledVector(east, Math.sin(skyLookDir.az));
+            skyCamera.up.copy(horizonDir).negate();
+            skyCamera.lookAt(skyCamera.position.clone().add(up.clone().multiplyScalar(100)));
+
+            // ---- REAL SCALE SKY CAMERA ----
+            // To avoid jitter, get Earth center position (more stable than tiny observer offset)
+            // then offset in the observer's direction using the already-computed table-top frame
+            const realEarthWorldPos = new THREE.Vector3();
+            realEarthContainer.getWorldPosition(realEarthWorldPos);
+
+            // Observer direction from Earth center (same as table-top, just use 'up' vector)
+            // Position camera at Earth center + observer direction * (Earth radius + small offset)
+            const realCamDist = REAL_SCALE.earthRadius * 1.01; // Just above surface
+            realSkyCamera.position.copy(realEarthWorldPos).addScaledVector(up, realCamDist);
+
+            // Copy orientation directly from table-top sky camera (both views should match)
+            realSkyCamera.up.copy(skyCamera.up);
+            realSkyCamera.quaternion.copy(skyCamera.quaternion);
+
+            // Compute sun/moon alt-az for display (from table-top model)
+            const sunWorldPos = new THREE.Vector3(0, 0, 0);
+            const moonWorldPos = new THREE.Vector3();
+            moon.getWorldPosition(moonWorldPos);
+
+            const sunDir = sunWorldPos.clone().sub(observerWorldPos).normalize();
+            const moonDir = moonWorldPos.clone().sub(observerWorldPos).normalize();
+
+            const sunAlt = Math.asin(sunDir.dot(up));
+            const sunHor = sunDir.clone().sub(up.clone().multiplyScalar(sunDir.dot(up))).normalize();
+            const sunAz = Math.atan2(sunHor.dot(east), sunHor.dot(north));
+
+            const moonAlt = Math.asin(moonDir.dot(up));
+            const moonHor = moonDir.clone().sub(up.clone().multiplyScalar(moonDir.dot(up))).normalize();
+            const moonAz = Math.atan2(moonHor.dot(east), moonHor.dot(north));
+        }
+
+        function updateInfoDisplay(days) {
+            // Moon age from calibrated new moon reference
+            const daysSinceNewMoon = days - NEW_MOON_OFFSET_FROM_J2000;
+            const moonAge = ((daysSinceNewMoon % SYNODIC_MONTH_DAYS) + SYNODIC_MONTH_DAYS) % SYNODIC_MONTH_DAYS;
+            const phases = ['New', 'Wax Cres', '1st Qtr', 'Wax Gib', 'Full', 'Wan Gib', 'Last Qtr', 'Wan Cres'];
+            const phaseIdx = Math.floor(moonAge / SYNODIC_MONTH_DAYS * 8) % 8;
+            const illumination = Math.round((1 - Math.cos(moonAge / SYNODIC_MONTH_DAYS * 2 * Math.PI)) / 2 * 100);
+            document.getElementById('moonPhase').textContent = `${phases[phaseIdx]} (${moonAge.toFixed(1)}d, ${illumination}%)`;
+        }
+
+        // ============================================
+        // UI CONTROLS
+        // ============================================
+        function setupControls() {
+            const dateInput = document.getElementById('dateInput');
+            const timeInput = document.getElementById('timeInput');
+            const speedSlider = document.getElementById('speedSlider');
+            const speedLabel = document.getElementById('speedLabel');
+            const nowBtn = document.getElementById('nowBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+
+            dateInput.addEventListener('change', updateFromInputs);
+            timeInput.addEventListener('change', updateFromInputs);
+
+            // Pause when editing date/time
+            const pauseOnEdit = () => {
+                speedSlider.value = 0;
+                animationSpeed = 0;
+                speedLabel.textContent = 'Paused';
+            };
+            dateInput.addEventListener('focus', pauseOnEdit);
+            timeInput.addEventListener('focus', pauseOnEdit);
+
+            // Scroll to change date/time - position in field affects scale
+            // Date: 0-40% year, 41-50% month, 51-100% day
+            // Time: 0-40% hour, 41-60% minute, 61-100% second
+            dateInput.addEventListener('wheel', e => {
+                e.preventDefault();
+                const rect = dateInput.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width; // 0-1
+                const delta = e.deltaY < 0 ? 1 : -1;
+                if (pos <= 0.40) {
+                    currentDate.setFullYear(currentDate.getFullYear() + delta);
+                } else if (pos <= 0.50) {
+                    currentDate.setMonth(currentDate.getMonth() + delta);
+                } else {
+                    currentDate.setDate(currentDate.getDate() + delta);
+                }
+                updateInputsFromDate();
+                const days = (currentDate.getTime() - J2000) / (86400 * 1000);
+                updateInfoDisplay(days);
+            });
+            timeInput.addEventListener('wheel', e => {
+                e.preventDefault();
+                const rect = timeInput.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width; // 0-1
+                const delta = e.deltaY < 0 ? 1 : -1;
+                if (pos <= 0.40) {
+                    currentDate.setHours(currentDate.getHours() + delta);
+                } else if (pos <= 0.60) {
+                    currentDate.setMinutes(currentDate.getMinutes() + delta);
+                } else {
+                    currentDate.setSeconds(currentDate.getSeconds() + delta);
+                }
+                updateInputsFromDate();
+                const days = (currentDate.getTime() - J2000) / (86400 * 1000);
+                updateInfoDisplay(days);
+            });
+
+            // Scroll on compass to rotate view direction
+            const compass = document.getElementById('compass');
+            compass.addEventListener('wheel', e => {
+                e.preventDefault();
+                const delta = e.deltaY < 0 ? 1 : -1;
+                skyLookDir.az += delta * 0.035;
+                updateCompass();
+            });
+
+            speedSlider.addEventListener('input', () => {
+                animationSpeed = getSpeedFromSlider(parseFloat(speedSlider.value));
+                speedLabel.textContent = formatSpeed(animationSpeed);
+            });
+
+            const reverseBtn = document.getElementById('reverseBtn');
+            const defaultSpeedBtn = document.getElementById('defaultSpeedBtn');
+
+            const auspiciousBtn = document.getElementById('auspiciousBtn');
+
+            nowBtn.addEventListener('click', setToNow);
+
+            auspiciousBtn.addEventListener('click', () => {
+                // July 20, 1969 at 20:17:40 UTC - Apollo 11 lunar landing
+                currentDate = new Date(Date.UTC(1969, 6, 20, 20, 17, 40));
+                updateInputsFromDate();
+                lastFrameTime = performance.now();
+            });
+
+            reverseBtn.addEventListener('click', () => {
+                // Reverse current direction
+                speedSlider.value = -parseFloat(speedSlider.value);
+                animationSpeed = getSpeedFromSlider(parseFloat(speedSlider.value));
+                speedLabel.textContent = formatSpeed(animationSpeed);
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                speedSlider.value = 0;
+                animationSpeed = 0;
+                speedLabel.textContent = 'Paused';
+            });
+
+            defaultSpeedBtn.addEventListener('click', () => {
+                speedSlider.value = 2; // 1 hr/sec forward
+                animationSpeed = 3600;
+                speedLabel.textContent = '1.0 hr/sec';
+            });
+
+            setToNow();
+        }
+
+        function setToNow() {
+            currentDate = new Date();
+            updateInputsFromDate();
+            updatePositions();
+            const days = (currentDate.getTime() - J2000) / (86400 * 1000);
+            updateInfoDisplay(days);
+        }
+
+        function updateFromInputs() {
+            const dateStr = document.getElementById('dateInput').value;
+            const timeStr = document.getElementById('timeInput').value || '12:00:00';
+            if (dateStr) {
+                // Input is local time, convert to UTC
+                const localDate = new Date(dateStr + 'T' + timeStr);
+                // Subtract local offset to get UTC
+                currentDate = new Date(localDate.getTime() - LOCAL_UTC_OFFSET * 3600 * 1000);
+                // Reset lastFrameTime to prevent huge time jump
+                lastFrameTime = performance.now();
+                // Update display when user changes time
+                const days = (currentDate.getTime() - J2000) / (86400 * 1000);
+                updateInfoDisplay(days);
+            }
+        }
+
+        function updateInputsFromDate() {
+            // Display as local time
+            const localDate = new Date(currentDate.getTime() + LOCAL_UTC_OFFSET * 3600 * 1000);
+            document.getElementById('dateInput').value = localDate.toISOString().split('T')[0];
+            document.getElementById('timeInput').value = localDate.toISOString().split('T')[1].split('.')[0];
+        }
+
+        // ============================================
+        // ANIMATION LOOP
+        // ============================================
+        function animate(time) {
+            requestAnimationFrame(animate);
+
+            if (animationSpeed !== 0) {
+                const deltaReal = (time - lastFrameTime) / 1000;
+                const deltaSim = deltaReal * animationSpeed * 1000;
+                currentDate = new Date(currentDate.getTime() + deltaSim);
+                updateInputsFromDate();
+                // Update info display only when time changes
+                const days = (currentDate.getTime() - J2000) / (86400 * 1000);
+                updateInfoDisplay(days);
+            }
+            lastFrameTime = time;
+
+            // Always update positions (for camera controls to work when paused)
+            updatePositions();
+
+            // Update cameras to track Earth (both locked together)
+            updateOrreryCamera();
+            updateRealScaleCamera();
+
+            // Render 2x2 grid
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const halfW = width / 2;
+            const halfH = height / 2;
+            const aspect = halfW / halfH;
+
+            renderer.clear();
+            renderer.setScissorTest(true);
+
+            // Top-left: Table-top orrery
+            renderer.setViewport(0, halfH, halfW, halfH);
+            renderer.setScissor(0, halfH, halfW, halfH);
+            orreryCamera.aspect = aspect;
+            orreryCamera.updateProjectionMatrix();
+            skybox.position.copy(orreryCamera.position); // Center skybox on camera
+            renderer.render(scene, orreryCamera);
+
+            // Top-right: Real scale orrery
+            renderer.setViewport(halfW, halfH, halfW, halfH);
+            renderer.setScissor(halfW, halfH, halfW, halfH);
+            realScaleCamera.aspect = aspect;
+            realScaleCamera.updateProjectionMatrix();
+            skyboxReal.position.copy(realScaleCamera.position); // Center skybox on camera
+            renderer.render(scene, realScaleCamera);
+
+            // Bottom-left: Table-top sky
+            renderer.setViewport(0, 0, halfW, halfH);
+            renderer.setScissor(0, 0, halfW, halfH);
+            skyCamera.aspect = aspect;
+            skyCamera.updateProjectionMatrix();
+            skybox.position.copy(skyCamera.position); // Center skybox on camera
+            renderer.render(scene, skyCamera);
+
+            // Bottom-right: Real scale sky
+            renderer.setViewport(halfW, 0, halfW, halfH);
+            renderer.setScissor(halfW, 0, halfW, halfH);
+            realSkyCamera.aspect = aspect;
+            realSkyCamera.updateProjectionMatrix();
+            skyboxReal.position.copy(realSkyCamera.position); // Center skybox on camera
+            renderer.render(scene, realSkyCamera);
+
+            renderer.setScissorTest(false);
+        }
+
+        // ============================================
+        // RESIZE HANDLER
+        // ============================================
+        function onResize() {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        window.addEventListener('resize', onResize);
+        initScene();
+        setupControls();
+        updateCompass();
+        animate(performance.now());
+    </script>
+</body>
+</html>
