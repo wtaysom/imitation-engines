@@ -315,15 +315,6 @@ figcaption {
   margin-top: 2em;
 }
 
-.toc-pre-row {
-  display: flex;
-}
-
-.toc-pre-row > p:last-child {
-  margin-left: auto;
-  width: fit-content;
-  margin-right: var(--toc-right-margin);
-}
 
 .toc-columns {
   display: flex;
@@ -376,8 +367,6 @@ figcaption {
 
 @media (max-width: 900px) {
   .toc-columns { flex-direction: column; }
-  .toc-pre-row { flex-direction: column; }
-  .toc-pre-row > p:last-child { margin-left: 0; margin-right: 0; }
   body { font-size: 21px; }
   .title-grid { font-size: clamp(0.5em, 3.5vw, 2em); }
   .quote-header {

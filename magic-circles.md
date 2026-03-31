@@ -36,7 +36,7 @@ There's another sign, "Danger! Deep Water".
 
 ![sign saying "Danger! Deep Water]({{ '/assets/images/03-deep.jpeg' | relative_url }})
 
-That's bullshit.  Obviously false.  The water is 10cm deep.  Telltale sign of b-zombies at work.  If you see the second sign first, you'll ignore the first sign, slip, and be hurt.  This is bad.  This is a mistake.  The second sign could have said, "Stay out!  Water Plants."  I don't understand why the world is broken in this way, but it's causing problems everywhere, now more than ever.
+That's bullshit.  Obviously false.  The water is 10cm deep.  Telltale sign of b-zombies at work.  If you see the second sign first, you'll ignore the first sign, slip, and be hurt.  This is bad.  This is a mistake.  The second sign could have said, "Stay out!  Water Plants."  I don't understand why the world is broken in this way, but it's causing [problems](https://pluralistic.net/2024/03/25/black-boxes/) everywhere, now more than ever.
 
 Behind every b-zombie, potentially derived in a long line, lies a human holding its leash.  Most b-zombies were human once, but that's changing.  New artificial broods burst forth so monsterous as to garner no sympathy.
 

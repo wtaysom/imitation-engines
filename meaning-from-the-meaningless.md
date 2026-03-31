@@ -94,7 +94,7 @@ Welch goes on to talk about how Anthropic, once they knew what to look for, were
 
 Go watch the video.  The Nanda model has [about](https://gemini.google.com/share/2dbf2d5b452e) 200k weights.  That's a lot of math to just learn how to add two numbers.  I can think of a full lookup table `uint8_t table[113][113]` with half that many bits and twice as many as it needs.  Remember the model immediately memorized the training data.  It's almost like the training data hardly helped, only nudged the model toward discovering trigonometry.
 
-Algorithmic Simplicity here looks into the size paradox.
+Having seen a tiny LLM learn, what happens when we scale up?  How do really Large Language Models work?  Algorithmic Simplicity here looks into the size paradox.
 
 Twist:
 

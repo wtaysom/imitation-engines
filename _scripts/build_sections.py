@@ -18,6 +18,7 @@ RELEASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Ordered list of sections: (source_file, output_file, title, permalink)
 SECTIONS = [
     ('00-disclaimer.md', 'disclaimer.md', '䷉ Disclaimer', '/disclaimer'),
+    ('00-01-players.md', 'players.md', '※ Players', '/players'),
     ('01-00-facing-peril.md', 'facing-peril.md', '䷚ Facing Peril', '/facing-peril'),
     ('01-01-magic-circles.md', 'magic-circles.md', '䷩ Magic Circles', '/magic-circles'),
     ('01-02-sad-san-junipero.md', 'sad-san-junipero.md', '䷶ Sad San Junipero', '/sad-san-junipero'),

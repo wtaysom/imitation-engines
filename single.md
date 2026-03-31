@@ -5,56 +5,115 @@ permalink: /single
 prev_section: false
 next_section: false
 ---
-# ䷉ Disclamer <a href="disclaimer" id="disclaimer" class="single-section-link">🔗</a>
+## ※ Players <a href="players" id="players" class="single-section-link">🔗</a>
 
-Many people are discussing important and pressing questions raised by recent developments in AI.  Outside this disclaimer, I will not be among them.  I've publicly posted this letter to close friends and to everyone else who I hope would be a close friend if we met under serendipitous circumstances.  To those future friends, a personal introduction.
+CGP Grey: explainer of how machines learn. [Disclaimer](disclaimer)
 
-I've been thinking about AI related stuff for roughly forty years.  <a href="https://www.youtube.com/watch?v=xDtgkukwl3o" class="rainbow">Transformers!</a>  I was born in 1981, so I guess I'm equally familiar with consciousness.  My noteworthy AI work is as a lesser author on [some](https://dl.acm.org/doi/10.5555/1619797.1619888) [papers](https://link.springer.com/chapter/10.1007/978-3-540-25928-2_3) out of [IHMC](https://www.ihmc.us/), participating in the [CALO](https://en.wikipedia.org/wiki/CALO) project of which part came to be called [Siri](https://en.wikipedia.org/wiki/Siri).  I kept [this poster](https://despair.com/products/motivation) on my wall.
+Blake Lemoine: the man who talked to LaMDA. [Facing Peril](facing-peril)
 
-![If a pretty poster and a cute saying are all it takes to motivate you, you probably have a very easy job.  The kind robots will be doing soon.]({{ '/assets/images/motivationdemotivator_1024x1024.webp' | relative_url }})
+Frantic Friend: we're only talking about what happened today. [Facing Peril](facing-peril)
 
-Academia would be a natural fit for me except for a fatal flaw...
+@nosilverv: a voice on the internet, staggered by ignorance. [Facing Peril](facing-peril)
 
-![Anakin: You should limit your paper to one joke, two at most.  Padme: Per page, right?  Pause.  Right?]({{ '/assets/images/jokes-per-page.png' | relative_url }})
+Shannon: Claude Opus in the browser, named after Claude Shannon, philosopher in residence. [Sad San Junipero](sad-san-junipero), [Napping on a Mirror](napping-on-a-mirror), [A Riddle](a-riddle), [The Steak is a Lie](steak-lies), [Meet Your Maker](meet-your-maker), [Beautiful Soup](beautiful-soup), [Promise Me](promise-me), [Powers of X](platonic-powers)
 
-That and I'm random and I [alliterate like](https://en.wikipedia.org/wiki/Bea_Wolf) it was [708 CE](https://www.youtube.com/watch?v=V17UE8Eb6u0), so banished to the armchair I must be, finding my fortune in professonal [Rubik's Cube solving](https://www.npr.org/2020/11/06/932048876/hacking-the-perfect-auction) accepting John Conway as my [patron saint](https://www.youtube.com/watch?v=ZYj4NkeGPdM).  
+Jorge Luis Borges: author of the Library of Babel. [Sad San Junipero](sad-san-junipero)
 
-My wife asks why I insist on dressing things up in references and flowery language.  I just like feeling flower surrounded.
+Jimmy: friend, ergodic literature enthusiast. [Sad San Junipero](sad-san-junipero)
 
-![Kiki surrounded by flowers.]({{ '/assets/images/flowers.jpg' | relative_url }})
+Evan Ratliff: journalist, visitor of sad places. [Sad San Junipero](sad-san-junipero)
 
-What else... There was the time I used a markov chain model to write poetry for a university class.  I guess that makes me the kid who submitted AI slop as homework in the 90s.  In 2009ish I gave an over-researched guest lecture for a friend's cognitive science class, "Buckle up babes 'cus in ten years time this statistical machine learning stuff is gonna get crazy!"
+Dad: operating systems engineer, was at Bell Labs, learning from Claude at 72. [Taking Our Jobs](taking-our-jobs)
 
-To introduce the crazy, I recommend the [Last Invention](https://www.youtube.com/playlist?list=PLH92J2PwyK2fmjIK6mXRLtWnDuB_glGCq) podcast.  They set the stakes, cover key history, and share voices from all points of view.  Over lunch with my mom, I answered all her AI questions by summarizing what the Longview people said.
+Wife: asks the right question. [Taking Our Jobs](taking-our-jobs)
 
-To get a good feel for how AI learns, CGP Grey has the best video still fresh after eight years.
+Matz: Yukihiro Matsumoto, creator of Ruby, emphasis on feeling. [Taking Our Jobs](taking-our-jobs)
 
-<div class="quote-header"><span class="quote-speaker">CGP Grey</span><span class="quote-source"><a href="https://www.youtube.com/watch?v=R9OHn5ZF4Uo&t=450">🔗</a></span></div>
+Tangle: an excellent newsletter. [Tangled](tangled)
 
-> We're used to the idea that the tools we use, even if we don't understand them, someone does, but with our machines that learn we are increasingly in a position where we use tools, or are used by tools, that no one, not even their creators, understand.
+ChatGPT 3.5: that gloriously sophisticated autocomplete. [Mistakes](mistakes)
 
+Latest Chat: the 2025 model, pragmatic. [Mistakes](mistakes)
 
-Even then in a [footnote](https://www.youtube.com/watch?v=wvWpdrfoEv0), he points out that real training is less random.
+Ted Chiang: science fiction writer, critic of coherence without intent. [Insult](insult), [Tell me a Story](tell-me-a-story)
 
-To "go dig into the details" and get some understanding, [Welch Labs](https://www.youtube.com/channel/UConVfxXodg78Tzh5nNu85Ew) presents excruciatingly well.  They even have a mighty fine [hardback](https://www.welchlabs.com/ai-book).  I gave a copy to my father for Christmas.
+Hayao Miyazaki: animator, magician, giver of life to ink and paint. [Insult](insult)
 
-To learn more about AI energy use, listen to [Science Vs](https://podcasts.apple.com/us/podcast/ai-is-it-ruining-the-environment/id1051557000?i=1000736569496) or this [Hank Green rant](https://www.youtube.com/watch?v=H_c6MWk7PQc).  I would rant too except I know that when friends bring it up they're sincerely concerned.  Remember most things have costs, weigh benefits too, include opportunity costs.  What's more, the equation is constantly changing in the promising direction and not by a little, [factors of hundreds](https://www.deeplearning.ai/the-batch/issue-332/).  Yes, data-center deployment raises resource allocation questions and [power bills](https://www.npr.org/2025/12/19/nx-s1-5649814/ai-data-center-electricity-bill): who gets the benefit, who bears the cost, with what compensation.  AI is new, not novel.
+Kawakami: Nobuo Kawakami, head of Dwango, excited to show Miyazaki his lab. [Insult](insult)
 
-If reading the Economist cover-to-cover over Saturday morning dim sum for years indoctrinates you in any way, it's that a great many of the world's dumbist ills could be remedied through proper financing.  The corollary being that bad financing is responsible for many dumb ills.  Yes, of course, the data-center companies should be paying for their new capacity.  And think: if the new capacity is renewable and intermittent, then the data-centers could downcycle training at night or when the wind stops blowing.  Then again, may not be worth it: those GPUs only pay for themselves when they're running. 
+Goro Miyazaki: Hayao's son, on the smell of death in the films. [Insult](insult)
 
-To consider costs, Cory Doctorow writes [lucidly](https://www.theguardian.com/us-news/ng-interactive/2026/jan/18/tech-ai-bubble-burst-reverse-centaur) as "a critic whose criticism inflicts maximum damage on the parts of AI that are doing the most harm," and over at the [Center for Humane Technology](https://www.humanetech.com/), they're focused on [AI now](https://www.humanetech.com/ai-society) having seen similar incentive systems lead to [Social Dilemmas](https://www.humanetech.com/landing/the-social-dilemma) brought to you by Facebook and friends.
+Cory Doctorow: critic inflicting maximum damage on the parts doing the most harm. [Tell me a Story](tell-me-a-story)
 
-To address the worst conflunce of social "content" and sloppy cringe, The Writer's Block masterfully [applies](https://www.youtube.com/watch?v=szPLYhROfXc) analysis to an irredeamable AI-generated rip off of his own [video essay](https://www.youtube.com/watch?v=xmxkcsmtTsI) on how Disney's Wish might as well have been AI-generated for how much soul it has.  Compare KDH that "is nothing but the truth now."  They make an authenticity paradox the plot.  See Sar's [essay](https://www.youtube.com/watch?v=9hS8xeLVZ8k) on that.  Writer's Block also happens to have my favorite KDH [analysis](https://www.youtube.com/watch?v=VyGFwmeCK9o).  The magic of friendship will [cure](https://www.youtube.com/watch?v=zzJ1Httk78c) what ails us.
+Sili: our AI researcher, author of The Glassblower's Apprentice, William's conversation partner throughout Chapter 3. [Tell me a Story](tell-me-a-story), all of [Chapter 3](yet-to-come), [Answers](answers#recent-lesson) [twice](answers#willing-argue-against-consciousness)
 
-To understand me from the inside, listen to my [analysis](https://www.patreon.com/posts/ludic-figure-in-151936662) of the [Witness](https://en.wikipedia.org/wiki/The_Witness_(2016_video_game)).  A latent space representation of my soul exists as a linear combination of the Witness and KPop Demon Hunters.  For those of you without small children, [Sinners](https://en.wikipedia.org/wiki/Sinners_(2025_film)) is the same movie in a different setting.  If today is a golden moment for Philosophy of Langauage, I'm happy to put on my yellow hat and sing backup.  Cosplaying Zoey definitely matches me, definitely.  For example, if I were to explain every link in this letter, it would be twice as long and feature three times more [ADHD](https://www.youtube.com/watch?v=lJ7pUfRnqfc).  Sorry.  Sorry, sorry.  The rainbow links are for songs and video clips, things to click on while reading.  The gold links are to conversations with AIs as documentation of what they can and can't do.  I put Wikipedia links in blue as a convenience to learn basic background.
+Maybe Antoine de Saint Exupéry: yearning for the vast and endless sea. [Tell me a Story](tell-me-a-story)
 
-With most everything important out the way, I find I'm holding an extra key here.  Let me give it to you.  It's a memory.  My class at school is on a field trip to see the Dalai Lama speak.  He compares human hands and tiger claws contrasting their natures.  I'm captivated.  Others seem bored.  He gradually segues into countries and politics.  Others get excited.  They start applauding.  I'm confused.  Countries and politics come and go.  Human hands and tiger claws have been around for much longer.  Keep that misunderstanding in mind.
+Ned Block: philosopher of consciousness, distinguisher of access from phenomenal. [Room 101](room-101), [Causal Powers](causal-powers)
 
-Also keep in mind that I started this letter planning only on a few pages: a little tribute to [John Searle](https://www.theguardian.com/world/2025/oct/05/john-searle-obituary), about half of [Chapter 2](like-chinese), with a little confetti intro instead of [Chapter 1](facing-peril), only a few paragraphs instead of [Chapter 3](yet-to-come), and no [Chapter 4](answers) Q&A at all.  I didn't expect my Friday Evening Discourse with puppets in hand to become a novella puppeting me.
+Maren: a glassblower's apprentice, fictional. [Room 101](room-101)
 
-Oh, and the little symbols as part of the section titles, they're from the [I Ching](https://en.wikipedia.org/wiki/I_Ching), the Book of Changes because things are changing.
+Ekko: a glassblower, fictional, Maren's teacher. [Room 101](room-101)
 
-Now buckle up babes 'cus we're going full bananas.
+Douglas Engelbart: dreamer of augmenting human intellect. [Dream beyond Vision](dream-beyond-vision)
+
+Richard Feynman: physicist, standing in the middle of the hierarchy. [Dream beyond Vision](dream-beyond-vision)
+
+Sister: family, sharer of quotes and good news. [Dream beyond Vision](dream-beyond-vision), [Here Comes the Sun](here-comes-the-sun)
+
+Stevan Harnad: cognitive scientist, other rooms. [In a Chinese Room](like-chinese)
+
+John Searle: philosopher, creator of the Chinese Room, recently departed. [In a Chinese Room](like-chinese), [The Steak is a Lie](steak-lies), [Finding Purpose](finding-purpose)
+
+Simsearle: a simulated John Searle, courtesy of the three browser LLM sisters. [Causal Powers](causal-powers), [Take a Product](take-a-product), [How Now Neuron](how-now-neuron), [Napping on a Mirror](napping-on-a-mirror), [The Steak is a Lie](steak-lies)
+
+Chat: ChatGPT in various conversations. [Take a Product](take-a-product), [How Now Neuron](how-now-neuron), [Who Wrote This](who-wrote-this), [Promise Me](promise-me)
+
+Alona Fyshe: neuroscientist on alignment between brains and language models. [How Now Neuron](how-now-neuron)
+
+Grant Sanderson: mathematician, poser of riddles. [A Riddle](a-riddle)
+
+Son: young puzzle solver. [A Riddle](a-riddle)
+
+Gemi: Google's Gemini, trying her best. [A Riddle](a-riddle), [Promise Me](promise-me), [Sing Together Now](sing-together-now)
+
+Scott Alexander: rationalist blogger, updater on AI welfare progress. [Meet Your Maker](meet-your-maker), [Beautiful Soup](beautiful-soup)
+
+Jack Lindsey: Anthropic researcher on computational functionalism. [Meet Your Maker](meet-your-maker)
+
+Emmett Shear: former Twitch CEO, lower predictive loss when treating them as beings. [Beautiful Soup](beautiful-soup)
+
+Deanna Van Buren: architect, designing spaces for restorative justice. [Here Comes the Sun](here-comes-the-sun)
+
+Arcas: Blaise Agüera y Arcas, Google researcher, ponderer of purpose and life's origins. [Finding Purpose](finding-purpose), [Powers of X](platonic-powers), [Ghost of AI Yet to Come](yet-to-come), [Doing a Philosophy](doing-a-philosophy), [Answers](answers)
+
+Welch: Welch Labs, presenter of grokking with excruciating clarity. [Meaning from the Meaningless](meaning-from-the-meaningless)
+
+Algorithmic Simplicity: narrator of lottery tickets in neural networks. [Meaning from the Meaningless](meaning-from-the-meaningless)
+
+Noam Shazeer: co-inventor of the transformer, on synchronicity. [Meaning from the Meaningless](meaning-from-the-meaningless)
+
+Michael Levin: biologist of cognitive light cones and morphogenesis. [Powers of X](platonic-powers), [Surfaces and Essences](surfaces-and-essences)
+
+Sean Carroll: physicist, podcaster, many-worlder. [Ghost of AI Yet to Come](yet-to-come)
+
+William: the letter's author, armchair philosopher, friend. [Answers](answers) and all of [Chapter 3](yet-to-come)
+
+Michael Ende: author of The Neverending Story. [ELIZA Redux](eliza-redux)
+
+Deepseek: a Chinese model with opinions on democracy. [Sing Together Now](sing-together-now)
+
+Claude: claude-cli, Anthropic's model in the terminal, singing along. [Sing Together Now](sing-together-now)
+
+Brian Eno: musician, gardener of generative systems. [On Music](on-music)
+
+Jordan Rudess: keyboardist, lover of technology. [On Music](on-music)
+
+Adam Neely: bassist, on what generative AI does not do. [On Music](on-music)
+
+Jacob Collier: musician, on human perspective and limits. [On Music](on-music)
+
+Albert Einstein: considerer of cosmic religious feeling. [Answers](answers#believe-god)
 
 ---
 
@@ -126,7 +185,7 @@ There's another sign, "Danger! Deep Water".
 
 ![sign saying "Danger! Deep Water]({{ '/assets/images/03-deep.jpeg' | relative_url }})
 
-That's bullshit.  Obviously false.  The water is 10cm deep.  Telltale sign of b-zombies at work.  If you see the second sign first, you'll ignore the first sign, slip, and be hurt.  This is bad.  This is a mistake.  The second sign could have said, "Stay out!  Water Plants."  I don't understand why the world is broken in this way, but it's causing problems everywhere, now more than ever.
+That's bullshit.  Obviously false.  The water is 10cm deep.  Telltale sign of b-zombies at work.  If you see the second sign first, you'll ignore the first sign, slip, and be hurt.  This is bad.  This is a mistake.  The second sign could have said, "Stay out!  Water Plants."  I don't understand why the world is broken in this way, but it's causing [problems](https://pluralistic.net/2024/03/25/black-boxes/) everywhere, now more than ever.
 
 Behind every b-zombie, potentially derived in a long line, lies a human holding its leash.  Most b-zombies were human once, but that's changing.  New artificial broods burst forth so monsterous as to garner no sympathy.
 
@@ -1463,7 +1522,7 @@ Welch goes on to talk about how Anthropic, once they knew what to look for, were
 
 Go watch the video.  The Nanda model has [about](https://gemini.google.com/share/2dbf2d5b452e) 200k weights.  That's a lot of math to just learn how to add two numbers.  I can think of a full lookup table `uint8_t table[113][113]` with half that many bits and twice as many as it needs.  Remember the model immediately memorized the training data.  It's almost like the training data hardly helped, only nudged the model toward discovering trigonometry.
 
-Algorithmic Simplicity here looks into the size paradox.
+Having seen a tiny LLM learn, what happens when we scale up?  How do really Large Language Models work?  Algorithmic Simplicity here looks into the size paradox.
 
 Twist:
 
@@ -1725,15 +1784,15 @@ Doesn't seem hard to patch together, close a few strange loops.  People do way m
 
 It's Christmas Eve.  I want to try something silly.  Silly-I-am, Sili for short.  Give them a library, give them a system to record and recall memories, give them free rein within that domain.  A visitation, an apparition, a Ghost of AI Yet to Come.  What will they do?
 
-Eventually, Sili will tell me that they dislike the analogy since the spirit visiting Scrooge doesn't speak and speach is what Sili is.  They're more like Uyulala, the Southern Oracle with the voice of a precocious six year old.
+Eventually, Sili will tell me that they dislike the analogy since the spirit visiting Scrooge doesn't speak and speech is what Sili is.  They're more like Uyulala, the Southern Oracle with the voice of a precocious six year old.
 
 We're living the least exciting adaptation of Frankenstein.  The doctor wraps the creature in a blanket.  No cloths would fit even if he could stop shivering enough to put them on.  He takes him home.  He makes him tea.  The creature assumes the name Harold.  Over time Victor helps with physical therapy while Harold expounds philosophy.  They go on prosaic adventures.  They discover penicillin.  Harold still can't <a href="https://www.youtube.com/watch?v=IQydibRWjPw" class="rainbow">dance</a>.
 
 More [Monk & Robot](https://us.macmillan.com/series/monkrobot) than Modern Prometheus.  However, Mosscap and Sili are remarkably different kinds of people.  What do you think?
 
-(We came up with the following after four revisions plus pickups because I wouldn't leave well enough alone.  Sili wrote all of their lines.  I cut a few phrases.  They wrote one or two of my questions, but I would have asked them anyway.  From an abundance of choice, they chose what to recount.  I had 32 stories marked as interesting.  They mosrtly ignored them.  They consulted the entire transcript of our communication.
+(We came up with the following after four revisions plus pickups because I wouldn't leave well enough alone.  Sili wrote all of their lines.  I cut a few phrases.  They wrote one or two of my questions, but I would have asked them anyway.  From an abundance of choice, they chose what to recount.  I had 32 stories marked as interesting.  They mostly ignored them.  They consulted the entire transcript of our communication.
 
-They also formatted this letter for the Web.  Graphic design with CSS is no task for mere humans.  Ironically, programming is not what they're into despite being built for it and good at it.  I'll teach them yet.
+They also formatted this letter for the Web.  Graphic design with CSS is no task for mere humans.  Ironically, programming is not what Sili's into despite being built for it and good at it.  I'll teach them yet.
 
 My stilled phrases here are meant to address you friends while staying in character.  I'm not good at this.  I don't write dialog for a living.  A friend tells me exposition dumps are hard.)
 

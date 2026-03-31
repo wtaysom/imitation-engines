@@ -2,8 +2,8 @@
 layout: section
 title: ䷚ Facing Peril
 permalink: /facing-peril
-prev_section: /disclaimer
-prev_title: ䷉ Disclaimer
+prev_section: /players
+prev_title: ※ Players
 next_section: /magic-circles
 next_title: ䷩ Magic Circles
 ---

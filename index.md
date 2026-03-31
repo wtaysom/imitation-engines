@@ -12,11 +12,23 @@ layout: home
 <span class="title-email">wtaysom@gmail.com</span></p>
 </div>
 
-<div class="toc-pre-row">
+<div class="toc-columns">
+
+<div class="toc-chapter">
 <p><a href="{{ 'disclaimer' | relative_url }}">䷉ Disclaimer</a><br>
 <em>in which we pull out childish things.</em></p>
+</div>
+
+<div class="toc-chapter">
+<p><a href="{{ 'players' | relative_url }}">※ Players</a><br>
+<em>in which we meet the cast.</em></p>
+</div>
+
+<div class="toc-chapter">
 <p><a href="{{ 'single' | relative_url }}">䷁ Single-page Version</a><br>
 <em>in which we scroll a lot.</em></p>
+</div>
+
 </div>
 
 <div class="toc-columns">
