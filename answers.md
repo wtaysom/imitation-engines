@@ -679,7 +679,7 @@ What little spontaneous style I have is most active when I go out on an adventur
 > Are you a Buddhist?
 
 
-Yes.  The least cosmic kind, the "get over yourself, no really" kind.  It's a low bar.  Buddhism generally doesn't have many metaphysical commitments though specific traditions do: think reincarnation.  And some concepts, like Taoism with all its symbols, get slurped in without much resistence.
+Yes.  The least cosmic kind, the "get over yourself, no really" kind, the "mountains are mountains" [kind](https://plato.stanford.edu/entries/japanese-zen/#:~:text=mountains%20are%20mountains).  It's a low bar.  Buddhism generally doesn't have many metaphysical commitments though specific traditions do: think reincarnation.  And some concepts, like Taoism with all its symbols, get slurped in without much resistence.
 
 <div class="question-header"><a href="#whats-core-buddhism" id="whats-core-buddhism">⚓</a></div>
 

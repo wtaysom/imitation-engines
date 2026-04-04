@@ -115,4 +115,4 @@ William
 </ul>
 </div>
 
-<p class="copyright-notice">© 2025 dragging into 2026</p>
+<p class="copyright-notice">© 2025 dragging into 2026 William Taysom. Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC Attribution 4.0 International</a>.</p>
