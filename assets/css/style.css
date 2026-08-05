@@ -375,3 +375,8 @@ figcaption {
     gap: 1em;
   }
 }
+
+.whats-new {
+  text-align: center;
+  margin-bottom: 2em;
+}

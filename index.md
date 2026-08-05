@@ -12,6 +12,8 @@ layout: home
 <span class="title-email">wtaysom@gmail.com</span></p>
 </div>
 
+<p class="whats-new"><a href="{{ 'like-coding/' | relative_url }}">New July 2026: ⟳ “What is it like to be a coding Agent?” Slides and Script</a></p>
+
 <div class="toc-columns">
 
 <div class="toc-chapter">

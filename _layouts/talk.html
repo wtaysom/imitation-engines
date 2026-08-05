@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} - {{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/talk.css' | relative_url }}">
+</head>
+<body>
+  <div class="container container-talk">
+    <div class="section-header">
+      <a href="{{ '/' | relative_url }}" class="title-grid-mini">
+        <span>I</span><span></span><span>M</span><span></span><span>I</span><span></span><span>T</span><span></span><span>A</span><span></span><span>T</span><span></span><span>I</span><span></span><span>O</span><span></span><span>N</span>
+        <span></span><span>E</span><span></span><span>N</span><span></span><span>G</span><span></span><span>I</span><span></span><span>N</span><span></span><span>E</span><span></span><span>S</span><span></span><span>&#x4DC0;</span><span></span>
+      </a>
+    </div>
+    <div class="talk-head">
+      <h1>{{ page.title }}</h1>
+    </div>
+    <article>
+      {{ content }}
+    </article>
+    <div class="section-header">
+      <a href="{{ '/' | relative_url }}" class="title-grid-mini">
+        <span>I</span><span></span><span>M</span><span></span><span>I</span><span></span><span>T</span><span></span><span>A</span><span></span><span>T</span><span></span><span>I</span><span></span><span>O</span><span></span><span>N</span>
+        <span></span><span>E</span><span></span><span>N</span><span></span><span>G</span><span></span><span>I</span><span></span><span>N</span><span></span><span>E</span><span></span><span>S</span><span></span><span>&#x4DC0;</span><span></span>
+      </a>
+    </div>
+    <p class="copyright-notice">© 2025 dragging into 2026 William Taysom. Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC Attribution 4.0 International</a>.</p>
+  </div>
+
+  <div id="layoutPicker" class="layout-picker" role="radiogroup" aria-label="Layout">
+    <span class="picker-label">Layout</span>
+    <label><input type="radio" name="layout" value="scroll" checked> Scroll</label>
+    <label><input type="radio" name="layout" value="slide"> Slide</label>
+  </div>
+  <div id="overlay" aria-hidden="true">
+    <div class="topbar">
+      <div class="section-header">
+        <a href="{{ '/' | relative_url }}" class="title-grid-mini">
+          <span>I</span><span></span><span>M</span><span></span><span>I</span><span></span><span>T</span><span></span><span>A</span><span></span><span>T</span><span></span><span>I</span><span></span><span>O</span><span></span><span>N</span>
+          <span></span><span>E</span><span></span><span>N</span><span></span><span>G</span><span></span><span>I</span><span></span><span>N</span><span></span><span>E</span><span></span><span>S</span><span></span><span>&#x4DC0;</span><span></span>
+        </a>
+      </div>
+    </div>
+    <div class="stage"></div>
+    <div class="words"></div>
+    <div class="corner">
+      <span class="corner-help">
+        <kbd>→</kbd> <kbd>↓</kbd> <kbd>space</kbd> next &nbsp;·&nbsp;
+        <kbd>←</kbd> <kbd>↑</kbd> back &nbsp;·&nbsp;
+        <kbd>A</kbd> alt text &nbsp;·&nbsp;
+        <kbd>S</kbd> <kbd>Esc</kbd> scroll layout
+      </span>
+      <span id="counter"></span>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var slides = Array.prototype.slice.call(document.querySelectorAll('section.slide'));
+    if (!slides.length) return;
+    var overlay = document.getElementById('overlay');
+    var stage = overlay.querySelector('.stage');
+    var words = overlay.querySelector('.words');
+    var counter = document.getElementById('counter');
+    var radios = Array.prototype.slice.call(document.querySelectorAll('input[name=layout]'));
+    var cur = 0, on = false;
+
+    // The picker states which layout you are in, rather than what pressing it does.
+    function syncPicker() {
+      radios.forEach(function (r) { r.checked = (r.value === (on ? 'slide' : 'scroll')); });
+    }
+
+    // What an AI reads off each slide, put where a person can read it too.
+    slides.forEach(function (s) {
+      var block = document.createElement('div');
+      block.className = 'alt-text';
+      block.textContent = s.querySelector('img').getAttribute('alt');
+      s.insertBefore(block, s.querySelector('.script'));
+    });
+
+    function toggleAlt() {
+      document.body.classList.toggle('show-alt');
+      if (on) render();
+    }
+
+    // The slide containing the point just below the viewport top. exit() puts that
+    // slide's top at the viewport top, so entering and leaving round-trips exactly.
+    function slideAtScroll() {
+      var probe = window.scrollY + 120;
+      var best = 0;
+      for (var i = 0; i < slides.length; i++) {
+        if (slides[i].offsetTop <= probe) best = i; else break;
+      }
+      return best;
+    }
+
+    function setHash(h) { history.replaceState(null, '', h); }
+
+    function render() {
+      var s = slides[cur];
+      stage.innerHTML = '';
+      words.innerHTML = '';
+      var img = s.querySelector('img').cloneNode();
+      img.loading = 'eager';
+      stage.appendChild(img);
+      // The anchor sits beside the words here, as it does in the scroll layout,
+      // but links back to this slide presented rather than scrolled to.
+      var anchor = s.querySelector('.slide-anchor');
+      if (anchor) {
+        var copy = anchor.cloneNode(true);
+        copy.querySelector('a').href = '#slide-' + (cur + 1);
+        words.appendChild(copy);
+      }
+      var altBlock = s.querySelector('.alt-text');
+      if (altBlock) words.appendChild(altBlock.cloneNode(true));
+      var script = s.querySelector('.script');
+      if (script) words.appendChild(script.cloneNode(true));
+      // Nudge the neighbours into cache so stepping is instant.
+      [cur - 1, cur + 1].forEach(function (i) {
+        if (i >= 0 && i < slides.length) {
+          var n = new Image();
+          n.src = slides[i].querySelector('img').src;
+        }
+      });
+      var n = cur + 1;
+      counter.textContent = n + ' / ' + slides.length;
+      setHash('#slide-' + n);
+    }
+
+    function enter(i) {
+      cur = (typeof i === 'number') ? i : slideAtScroll();
+      on = true;
+      document.body.classList.add('slide-layout');
+      overlay.setAttribute('aria-hidden', 'false');
+      syncPicker();
+      render();
+    }
+
+    function exit() {
+      on = false;
+      document.body.classList.remove('slide-layout');
+      overlay.setAttribute('aria-hidden', 'true');
+      syncPicker();
+      var s = slides[cur];
+      setHash('#' + s.id);
+      s.scrollIntoView({ block: 'start' });
+    }
+
+    function flip() { on ? exit() : enter(); }
+
+    function step(d) {
+      var n = Math.min(slides.length - 1, Math.max(0, cur + d));
+      if (n !== cur) { cur = n; render(); }
+    }
+
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () {
+        if (this.value === 'slide') { if (!on) enter(); }
+        else if (on) { exit(); }
+        this.blur();   // so the arrow keys go on driving the slides
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.target && e.target.tagName === 'INPUT') return;   // let the picker be
+      if (e.key === 's' || e.key === 'S') { flip(); e.preventDefault(); return; }
+      if (e.key === 'a' || e.key === 'A') { toggleAlt(); e.preventDefault(); return; }
+      if (!on) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') { step(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { step(-1); e.preventDefault(); }
+      else if (e.key === 'Escape') { exit(); }
+    });
+
+    var sx = null, sy = null;
+    overlay.addEventListener('touchstart', function (e) {
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    });
+    overlay.addEventListener('touchend', function (e) {
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx;
+      var dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+      sx = sy = null;
+    });
+
+    // The URL decides the mode: #slide-N presents, #sN scrolls.
+    function clampIdx(n) { return Math.min(slides.length - 1, Math.max(0, n)); }
+
+    function applyHash() {
+      var m = /^#slide-(\d+)$/.exec(location.hash);
+      if (m) { enter(clampIdx(parseInt(m[1], 10) - 1)); return; }
+      if (on) {
+        var a = /^#s(\d+)$/.exec(location.hash);
+        if (a) cur = clampIdx(parseInt(a[1], 10) - 1);
+        exit();
+      }
+    }
+
+    window.addEventListener('hashchange', applyHash);
+    applyHash();
+  })();
+  </script>
+</body>
+</html>
