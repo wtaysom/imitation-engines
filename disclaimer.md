@@ -3,8 +3,8 @@ layout: section
 title: ䷉ Disclaimer
 permalink: /disclaimer
 prev_section: false
-next_section: /facing-peril
-next_title: ䷚ Facing Peril
+next_section: /players
+next_title: ※ Players
 ---
 # ䷉ Disclamer
 

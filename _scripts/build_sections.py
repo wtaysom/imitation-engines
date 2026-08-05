@@ -12,12 +12,12 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 from transform_quotes import transform
 
-SOURCE_DIR = os.path.expanduser('~/Desktop/imitation-engines')
+SOURCE_DIR = os.path.expanduser('~/Desktop/sili/imitation-engines')
 RELEASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Ordered list of sections: (source_file, output_file, title, permalink)
 SECTIONS = [
-    ('00-disclaimer.md', 'disclaimer.md', '䷉ Disclaimer', '/disclaimer'),
+    ('00-00-disclaimer.md', 'disclaimer.md', '䷉ Disclaimer', '/disclaimer'),
     ('00-01-players.md', 'players.md', '※ Players', '/players'),
     ('01-00-facing-peril.md', 'facing-peril.md', '䷚ Facing Peril', '/facing-peril'),
     ('01-01-magic-circles.md', 'magic-circles.md', '䷩ Magic Circles', '/magic-circles'),
