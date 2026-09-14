@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>36 Control Points</title><link rel="stylesheet" href="./style.css?v=header-shortcuts"></head>
+<body>
+ <main aria-label="Live Physarum simulation"><canvas id="simulation" aria-label="Animated particle simulation" tabindex="0"></canvas></main>
+ <aside id="gui" aria-label="Experiment controls">
+  <div class="identity-header">
+  <div class="identity-copy">
+  <h1>36 Control Points =
+   <span class="credit-line">36 Points by <a href="https://www.sagejenson.com/36points/" target="_blank" rel="noreferrer">Sage Jenson</a> +</span>
+   <span class="credit-line">Colors by <a href="https://bleuje.com/physarum-explanation/" target="_blank" rel="noreferrer">Bleuje</a> +</span>
+   <span class="credit-line">Controls by <a href="https://github.com/wtaysom" target="_blank" rel="noreferrer">William Taysom</a> +</span>
+   <span class="credit-line">Smarts by <a href="https://wtaysom.github.io/imitation-engines/like-coding/" target="_blank" rel="noreferrer">Sili</a></span>
+  </h1>
+  <div class="shortcuts identity-shortcuts">
+   <div class="shortcut-row"><span><button type="button" class="keycap-button" data-key="Space" aria-label="Toggle fullscreen" aria-keyshortcuts="Space"><kbd>Space</kbd></button> fullscreen</span></div>
+   <div class="shortcut-row"><span><button type="button" class="keycap-button" data-key="KeyH" aria-label="Hide controls" aria-keyshortcuts="H"><kbd>H</kbd></button> hide this panel</span></div>
+  </div>
+  </div>
+  <div id="parameter-legend" aria-label="Simulation parameter color key"></div>
+  </div>
+  <div class="shortcuts">
+   <div class="popup-row"><label for="preset">Point</label><select id="preset" aria-label="Displayed point"></select></div>
+   <div class="shortcut-row point-shortcuts"><span><button type="button" class="keycap-button" data-key="KeyL" aria-label="Reset simulation" aria-keyshortcuts="L"><kbd>L</kbd></button> reset</span><span><button type="button" class="keycap-button" data-key="KeyO" aria-label="Previous point" aria-keyshortcuts="O"><kbd>O</kbd></button> previous</span><span><button type="button" class="keycap-button" data-key="KeyP" aria-label="Next point" aria-keyshortcuts="P"><kbd>P</kbd></button> next</span></div>
+   <div class="popup-row"><label for="colors">Colors</label><select id="colors"></select></div>
+   <div class="shortcut-row color-shortcuts"><span><button type="button" class="keycap-button" data-key="KeyJ" aria-label="Previous color" aria-keyshortcuts="J"><kbd>J</kbd></button> previous</span><span><button type="button" class="keycap-button" data-key="KeyK" aria-label="Next color" aria-keyshortcuts="K"><kbd>K</kbd></button> next</span></div>
+   <div class="shortcut-row speed-shortcuts"><span><output id="simulation-speed-value">1.00×</output> speed</span><span><button type="button" class="keycap-button" data-key="KeyQ" aria-label="Slow down simulation" aria-keyshortcuts="Q"><kbd>Q</kbd></button> slower</span><span><button type="button" class="keycap-button" data-key="KeyE" aria-label="Speed up simulation" aria-keyshortcuts="E"><kbd>E</kbd></button> faster</span><span><button type="button" class="keycap-button" data-key="KeyR" aria-label="Stop simulation" aria-keyshortcuts="R"><kbd>R</kbd></button> stop</span><span><button type="button" class="keycap-button" data-key="KeyT" aria-label="Resume simulation" aria-keyshortcuts="T"><kbd>T</kbd></button> resume</span></div>
+  </div>
+  <div class="map-heading"><span>Dimension Reduction Map</span><button type="button" id="reset-origin" data-key="KeyM" aria-keyshortcuts="M"><kbd>M</kbd> Reset Origin</button></div>
+  <div class="coordinates" id="coordinates" aria-label="Four-dimensional position"></div>
+  <p class="hint map-hint">Reduces <span id="active-parameter-count"></span> simulation parameters to 4 fun dimensions. Dots on an axis show which parameters are the most wiggled. Click to set a target. Drag to define a path.</p>
+  <p class="hint" id="gamepad-status" role="status">Gamepad? Connect a controller, then press a button.</p>
+  <div id="gamepad-guide" class="hint" hidden aria-label="Gamepad controls">
+   <div>Left stick: WASD grid · Right stick: arrow grid</div>
+   <div>D-pad ← / →: previous / next point</div>
+   <div>D-pad ↑ / ↓: previous / next colors</div>
+   <div>L1 / R1: faster / slower</div>
+   <div>✕ pause / resume · ○ show / hide panel</div>
+   <div>△ reset origin · □ reset simulation · Options details</div>
+   <div class="unassigned">L2, R2, Share, L3, R3, PS: unused · Space: fullscreen</div>
+  </div>
+  <button id="toggleGui" data-key="KeyG" aria-expanded="false" aria-controls="expandableContent" aria-keyshortcuts="G"><kbd>G</kbd> <span id="toggleGui-label">Details ▼</span></button>
+  <div id="expandableContent" hidden>
+   <div class="settings">
+    <label for="speed">Travel speed</label><div class="param-value-row"><div class="parameter-slider"><input id="speed" type="range" min="0.005" max="0.12" step="0.005" value="0.025"></div><output id="speed-value" for="speed">0.025 / s</output></div>
+    <label for="horizon">Look ahead</label><div class="param-value-row"><div class="parameter-slider"><input id="horizon" type="range" min="4" max="60" step="4" value="12"></div><output id="horizon-value" for="horizon">12 steps</output></div>
+    <label for="quality">Simulation grid <span id="particle-count"></span></label><select id="quality"><option value="256">256 × 256 · responsive</option><option value="384">384 × 384</option><option value="512">512 × 512 · original resolution</option></select>
+   </div>
+   <h2>Parameters</h2>
+   <p class="hint">The four ± values dimension reduction maps.</p>
+   <div id="parameters"></div>
+  </div>
+  <footer><a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 3.0</a></footer>
+ </aside>
+ <div id="minimal-controls" aria-label="Minimal coordinate controls" hidden></div>
+ <button id="show-gui" data-key="KeyH" hidden aria-label="Show information and controls" aria-keyshortcuts="H"><kbd>H</kbd> Controls</button>
+ <div id="error" role="alert" hidden></div>
+ <script type="module" src="./src/app.js?v=gamepad-question"></script>
+</body></html>
