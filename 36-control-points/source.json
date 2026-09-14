@@ -1,8 +1,0 @@
-{
-  "repository": "https://github.com/wtaysom/interactive-physarum",
-  "branch": "codex/ws-parameter-curve",
-  "commit": "2bb9012c799c7dc81ff0c06e524e3bc401057744",
-  "directory": "web",
-  "license": "CC-BY-NC-SA-3.0",
-  "upstream": "https://github.com/Bleuje/interactive-physarum"
-}
