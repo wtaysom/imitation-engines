@@ -12,9 +12,8 @@ layout: home
 <span class="title-email">wtaysom@gmail.com</span></p>
 </div>
 
-<p class="whats-new"><a href="https://wtaysom.github.io/36-control-points/">36 Control Points — explore a particle simulation in four dimensions</a></p>
-
-<p class="whats-new"><a href="{{ 'like-coding/' | relative_url }}">New July 2026: ⟳ “What is it like to be a coding Agent?” Slides and Script</a></p>
+<p class="whats-new"><a href="https://wtaysom.github.io/36-control-points/">New September 2026: 36 Control Points simulates nearly a million moldy slimes, explore near infinite variety of 16 parameters using 4 smartly sensitivity reparameterized controls.</a><br>
+<a href="{{ 'like-coding/' | relative_url }}">July 2026: ⟳ “What is it like to be a coding Agent?” Slides and Script</a></p>
 
 <div class="toc-columns">
 
