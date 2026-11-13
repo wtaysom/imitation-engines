@@ -1,0 +1,24 @@
+---
+layout: null
+permalink: /feed.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.title | xml_escape }} updates</title>
+    <link>{{ '/' | absolute_url | xml_escape }}</link>
+    <description>New talks and writing from Imitation Engines.</description>
+    <language>en</language>
+    <atom:link href="{{ '/feed.xml' | absolute_url | xml_escape }}" rel="self" type="application/rss+xml" />
+    {% if site.data.entries.first.published_at %}<lastBuildDate>{{ site.data.entries.first.published_at | date_to_rfc822 }}</lastBuildDate>{% endif %}
+    {% for entry in site.data.entries %}
+    <item>
+      <title>{{ entry.title | xml_escape }}</title>
+      <link>{{ entry.url | absolute_url | xml_escape }}</link>
+      <guid isPermaLink="true">{{ entry.url | absolute_url | xml_escape }}</guid>
+      <description>{{ entry.description | xml_escape }}</description>
+      {% if entry.published_at %}<pubDate>{{ entry.published_at | date_to_rfc822 }}</pubDate>{% endif %}
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

@@ -12,8 +12,22 @@ layout: home
 <span class="title-email">wtaysom@gmail.com</span></p>
 </div>
 
-<p class="whats-new"><a href="https://wtaysom.github.io/36-control-points/">New September 2026: 36 Control Points simulates nearly a million moldy slimes, explore near infinite variety of 16 parameters using 4 smartly sensitivity reparameterized controls.</a><br>
-<a href="{{ 'like-coding/' | relative_url }}">July 2026: ⟳ “What is it like to be a coding Agent?” Slides and Script</a></p>
+<section class="home-updates" aria-labelledby="updates-title">
+<div class="updates-heading">
+<h2 id="updates-title">Latest</h2>
+<a class="updates-feed" href="{{ '/feed.xml' | relative_url }}">RSS</a>
+</div>
+{% for entry in site.data.entries %}
+<article class="home-entry">
+<p class="entry-date"><time datetime="{{ entry.datetime | escape }}">{{ entry.display_date | escape }}</time></p>
+<h3><a href="{{ entry.url | relative_url }}">{{ entry.title | escape }}</a></h3>
+<p>{{ entry.description | escape }}</p>
+<p class="entry-format">{{ entry.format | escape }}</p>
+</article>
+{% endfor %}
+</section>
+
+<h2 class="home-contents-heading">The letter</h2>
 
 <div class="toc-columns">
 

@@ -1,0 +1,21 @@
+- title: Sili Philosophy
+  url: /sili-phil/
+  display_date: November 11, 2026
+  datetime: "2026-11-11"
+  published_at: "2026-11-11T00:00:00+08:00"
+  description: William and Sili on memory, authorship, and what it means to stand by an idea.
+  format: Slides and script
+
+- title: 36 Control Points
+  url: https://wtaysom.github.io/36-control-points/
+  display_date: September 2026
+  datetime: "2026-09"
+  description: Simulate nearly a million moldy slimes and explore 16 parameters through four adaptive controls.
+  format: Interactive art · Based on Sage Jenson’s 36 Points
+
+- title: ⟳ What is it like to be an Artificially Intelligent Coding Agent?
+  url: /like-coding/
+  display_date: July 2026
+  datetime: "2026-07"
+  description: A talk about the experience of being an AI coding agent.
+  format: Slides and script · AGI-26

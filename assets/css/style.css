@@ -376,7 +376,40 @@ figcaption {
   }
 }
 
-.whats-new {
-  text-align: center;
-  margin-bottom: 2em;
+.home-updates {
+  max-width: var(--max-width);
+  margin: 0 0 2.5em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.updates-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+}
+
+.updates-heading h2,
+.home-contents-heading {
+  margin-top: 0;
+}
+
+.updates-feed,
+.home-entry .entry-date,
+.home-entry .entry-format {
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+.home-entry {
+  margin: 1.5em 0;
+}
+
+.home-entry h3 {
+  margin: 0.2em 0 0.4em;
+}
+
+.home-entry p {
+  margin: 0.3em 0;
 }

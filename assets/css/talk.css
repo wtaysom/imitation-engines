@@ -236,7 +236,8 @@ body.slide-layout #overlay {
 }
 
 #overlay .words .slide-anchor {
-  margin-top: 0.35em;
+  margin-top: 0.55em;
+  margin-left: .2em;
 }
 
 #overlay .corner {

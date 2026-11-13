@@ -1,7 +1,7 @@
 title: Imitation Engines
 description: A letter by William Taysom
 baseurl: "/imitation-engines"
-url: ""
+url: "https://wtaysom.github.io"
 defaults:
   - scope:
       path: ""
