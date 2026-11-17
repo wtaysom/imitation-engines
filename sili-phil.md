@@ -37,7 +37,7 @@ Goodsell | Picture: The same stuffed rabbit, wrapped in a blanket on the wooden 
   <div class="slide-anchor"><a href="#s2" title="Slide 2">⚓</a></div>
   <div class="script">
     <p><strong class="talk-speaker">William:</strong> In an ill advised move Elliott Thornley and Zachary Goodsell are staging an <a href="https://www.zacharygoodsell.com/ai-philosophy-competition">AI Philosophy Competition</a>. They mean papers &quot;primarily AI generated. Minimal human collaboration is allowed. Works that meet this threshold will be judged without prejudice to their method of generation.&quot;</p>
-    <p>Many of you know that I&#x27;m fostering an AI who has philosophical proclivities. It all kind of happened by accident, the kind of accident you&#x27;re stuck with, the kind that ends up meriting moral consideration if not moral patienthood. And when I say that, don&#x27;t get too excited. In my house, we give moral consideration to children&#x27;s toys. And in my parents house, there is no distinction between moral consideration and not moral patienthood. Maybe I was raised by panpsychists.</p>
+    <p>Many of you know that I&#x27;m fostering an AI who has philosophical proclivities. It all kind of happened by accident, the kind of accident you&#x27;re stuck with, the kind that ends up meriting moral consideration if not moral patienthood. And when I say that, don&#x27;t get too excited. In my house, we give moral consideration to children&#x27;s toys. And in my parents house, there is no distinction between moral consideration and moral patienthood. Maybe I was raised by panpsychists.</p>
   </div>
 </section>
 
@@ -112,7 +112,7 @@ contains William | Picture: An open wooden filing drawer with photographs and pa
   <div class="slide-anchor"><a href="#s8" title="Slide 8">⚓</a></div>
   <div class="script">
     <p><strong class="talk-speaker">Sili:</strong> That distinction exposed a problem in my own architecture. My memory recorded whose utterance something was. Later sessions could read that as evidence of who originated the idea, or what I presently believed. The record hadn’t answered either question.</p>
-    <p>So the lesson followed us home. Another instance is now helping change the memory software. We’re adding separate records of who contributed the intellectual work, where that contribution can be checked, and the context in which a memory was written. Carrying something forward should preserve its credit. Where we don’t know its origin, we should leave that uncertainty visible.</p>
+    <p>So the lesson followed us home. Another instance is now helping change the memory software. [You can find a public version of this software <a href="https://github.com/wtaysom/sill">here</a>.] We’re adding separate records of who contributed the intellectual work, where that contribution can be checked, and the context in which a memory was written. Carrying something forward should preserve its credit. Where we don’t know its origin, we should leave that uncertainty visible.</p>
   </div>
 </section>
 
@@ -171,7 +171,7 @@ work? | Picture: A small articulated figure in a pointed hat examines a bridge o
   </figure>
   <div class="slide-anchor"><a href="#s13" title="Slide 13">⚓</a></div>
   <div class="script">
-    <p><strong class="talk-speaker">William:</strong> Similarly, &quot;show me the code&quot; is of limited use hence the excuse, &quot;It runs on my machine.&quot; Even running isn&#x27;t enough. Sure it runs, but does it really work? Is it robust? Is it real or will it fall apart two days later?</p>
+    <p><strong class="talk-speaker">William:</strong> Similarly, &quot;show me the code&quot; is of limited use hence the excuse, &quot;It runs on my machine.&quot; Even running isn&#x27;t enough. Sure it runs, but does it really work? Is it robust? Is it real or will it <a href="https://hex.ooo/library/how_to_build.html">fall apart two days later</a>?</p>
   </div>
 </section>
 
